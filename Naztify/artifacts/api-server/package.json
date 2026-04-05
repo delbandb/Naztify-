@@ -1,0 +1,13 @@
+{
+  "name": "ios-notifier",
+  "version": "1.0.0",
+  "main": "serve.js",
+  "scripts": {
+    "start": "node serve.js"
+  },
+  "dependencies": {
+    "http": "^0.0.1-security",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  }
+}

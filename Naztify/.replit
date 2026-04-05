@@ -1,0 +1,30 @@
+modules = ["nodejs-24"]
+[[artifacts]]
+id = "artifacts/api-server"
+[deployment]
+router = "application"
+deploymentTarget = "autoscale"
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true", "PORT" = "8080", "BASE_PATH" = "/" }
+[workflows]
+runButton = "Project"
+[agent]
+stack = "PNPM_WORKSPACE"
+expertMode = true
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+[userenv]
+[userenv.shared]
+ONESIGNAL_APP_ID = "1a0d2289-603b-42c4-9069-c0a93482fc0f"
+ONESIGNAL_REST_API_KEY = "os_v2_app_digsfclahnbmjedjycutjax4b6jb5csomkuenqmnwld3ylrg3dvazcy56dvyyieozggh2xqmxo6l7tteq5qunmp2peqofryphk7napa"
+PORT = "8080"
+BASE_PATH = "/"
+
+[nix]
+packages = ["zip"]

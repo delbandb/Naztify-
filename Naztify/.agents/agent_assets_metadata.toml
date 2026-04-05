@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "3aybfK3sQLFTsdszqoQGp"
+uri = "file://artifacts/notify-her/assets/images/icon.png"
+type = "image"
+title = "notify her app icon"
