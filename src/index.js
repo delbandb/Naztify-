@@ -115,7 +115,22 @@ async function notifyReceiver({ emoji, message, appUrl }) {
   }
 }
 
+function sendManifest(res, { startUrl, name, shortName }) {
+  if (!fs.existsSync(MANIFEST_PATH)) {
+    res.status(404).send("Not Found");
+    return;
+  }
+
+  const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, "utf8"));
+  manifest.start_url = startUrl;
+  manifest.name = name;
+  manifest.short_name = shortName;
+  res.type("application/manifest+json").send(JSON.stringify(manifest));
+}
+
 app.get("/", (_req, res) => sendTemplate(res, "landing-page.html"));
+app.get("/for-her", (_req, res) => res.redirect("/receiver"));
+app.get("/for-you", (_req, res) => res.redirect("/sender"));
 app.get("/sender", (_req, res) => sendTemplate(res, "dashboard.html"));
 app.get("/dashboard", (_req, res) => sendTemplate(res, "dashboard.html"));
 app.get("/receiver", (_req, res) => sendTemplate(res, "her.html"));
@@ -128,6 +143,22 @@ app.get("/manifest.json", (_req, res) => {
   }
 
   res.type("application/manifest+json").sendFile(MANIFEST_PATH);
+});
+
+app.get("/receiver-manifest.json", (_req, res) => {
+  sendManifest(res, {
+    startUrl: "/receiver",
+    name: "Naztify Receiver",
+    shortName: "Naztify",
+  });
+});
+
+app.get("/sender-manifest.json", (_req, res) => {
+  sendManifest(res, {
+    startUrl: "/sender",
+    name: "Naztify Sender",
+    shortName: "Naztify",
+  });
 });
 
 app.get("/api/healthz", (_req, res) => {
